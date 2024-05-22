@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+  db_warehouse:
+   container_name: db_warehouse
+   restart: always
+   ports:
+     - "5454:5432"
+   environment:    
+    - POSTGRES_PASSWORD=root
+    - POSTGRES_USER=admin
+    - PGPORT=5432
+    - POSTGRES_DB=db_warehouse
+   image: postgres:15.7

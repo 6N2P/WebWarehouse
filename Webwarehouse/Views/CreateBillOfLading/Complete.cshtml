@@ -1,0 +1,41 @@
+﻿@using Webwarehouse.Models
+@model CreateBillOfLadingViewModel
+
+@{
+    ViewData["Title"] = "Complete";
+}
+
+
+<div class="text-center">
+    <h3 class="display-4">@Model.NameOrganisation</h3>
+</div>
+
+<div align="center">
+    <div style="margin:10px">
+        @Model.DateCreate.ToString()
+    </div>
+</div>
+
+<table class="table-bordered"
+       border="1"
+       cellpadding="5"
+       align="center"
+       width="100%">
+    <thade>
+        <tr class="text-center" style="background:#bbceed">
+            <th>Номенклатура</th>
+            <th width="10%">Кол-во. отгруж</th>
+        </tr>
+    </thade>
+    <tbody>
+        @{
+            foreach (var n in Model.Nomenclature)
+            {
+                <tr tr class="text-center">
+                    <td>@n.Name</td>
+                    <td>@n.CountSheeping</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

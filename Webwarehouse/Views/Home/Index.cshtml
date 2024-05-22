@@ -1,0 +1,34 @@
+﻿@using Webwarehouse.Models;
+@model NomenclaturaListViewModel;
+@{
+    ViewData["Title"] = "Warehouse";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Склад</h1>
+</div>
+
+<table class="table-bordered"
+       border="1"
+       cellpadding="5"
+       align="center"
+       width="100%">
+    <thade>
+        <tr class="text-center" style="background:#bbceed">
+            
+            <th>Номенклатура</th>
+            <th width="10%">Кол-во</th>
+        </tr>
+    </thade>
+    <tbody>
+        @{
+            foreach (Nomenclature map in Model.Nomenclatures)
+            {
+                <tr class="text-center">
+                    <td>@map.Name</td>
+                    <td>@map.Count</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

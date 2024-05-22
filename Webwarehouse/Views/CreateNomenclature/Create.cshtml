@@ -1,0 +1,32 @@
+﻿@model Nomenclature
+
+@{
+    ViewData["Title"] = "CreateNomenclature";
+}
+<div class="text-center">
+    <h3 class="display-4">Создать номенклатуру</h3>
+</div>
+
+<form asp-action="Create" method="post">
+
+    <div align="center">
+        <label asp-for="Name">Номенклатура</label>
+        <div>
+            <input asp-for="Name" class="form-control" style="margin:10px" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div align="center">
+        <label asp-for="Count">Количество</label>
+        <div>
+            <input asp-for="Count" class="form-control" style="margin:10px" />
+            <span asp-validation-for="Count" class="text-danger"></span>
+        </div>
+    </div>
+
+
+    <p align="center">
+        <input type="submit" value="Создать" style="margin:10px" />
+    </p>
+</form>

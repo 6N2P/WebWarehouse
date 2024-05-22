@@ -1,0 +1,76 @@
+﻿@model CreateBillOfLadingViewModel
+
+@{
+    ViewData["Title"] = "CreateBillOfLading";
+}
+<div class="text-center">
+    <h3 class="display-4">Создать товарную накладную</h3>
+</div>
+
+<form asp-action="Create" method="post">
+
+    <div align="center">
+        <label asp-for="NameOrganisation">Название организации</label>
+        <div>
+            <input asp-for="NameOrganisation" type="NameOrganisation" class="form-control" style="margin:10px" />
+            <span asp-validation-for="NameOrganisation" class="text-danger"></span>
+        </div>
+    </div>
+    <div align="center">
+        <label asp-for="DateCreate">Дата создания</label>
+        <div>
+            <input asp-for="DateCreate" type="DateCreate" class="form-control" style="margin:10px" />
+            <span asp-validation-for="DateCreate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div align="center">
+       
+    </div>
+    <table class="table-bordered"
+           border="1"
+           cellpadding="5"
+           align="center"
+           width="100%">
+        <thade>
+            <tr class="text-center" style="background:#bbceed">
+                <th width="10%">Наименование</th>
+                <th width="10%">Кол-во. общ.</th>
+                <th width="10%">Отгружать</th>
+                <th width="10%">Кол-во. отгруж</th>
+            </tr>
+        </thade>
+        <tbody>          
+            @{
+                for (int i = 0; i < Model.Nomenclature.Count; i++)
+                {
+                    
+                // }
+                // foreach (NomenclaturaForBillOfLading map in Model.Nomenclature)
+                // {                         
+                    <tr tr class="text-center">
+                        <td>
+                            <input asp-for="Nomenclature[i].Name" value="@Model.Nomenclature[i].Name" class="visually-hidden"/>
+                            <input asp-for="Nomenclature[i].IdNomenclature" value="@Model.Nomenclature[i].IdNomenclature" class="visually-hidden" />
+                            @Model.Nomenclature[i].Name
+                        </td>
+                        <td>
+                            <input asp-for="Nomenclature[i].CountAll" value="@Model.Nomenclature[i].CountAll" class="visually-hidden" />
+                            @Model.Nomenclature[i].CountAll
+                        </td>
+                        <td>
+                            <input asp-for="Nomenclature[i].IsSheeping" type="checkbox" checked="@Model.Nomenclature[i].IsSheeping" />
+                        </td>
+                        <td>
+                            <input asp-for="Nomenclature[i].CountSheeping" type="CountSheeping" value="@Model.Nomenclature[i].CountSheeping" />
+                        </td>
+                    </tr>
+                }
+            }            
+    </tbody>
+</table>
+
+    <p align="center">
+        <input type="submit" value="Создать" style="margin:10px" />
+    </p>
+</form>
