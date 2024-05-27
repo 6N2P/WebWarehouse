@@ -8,7 +8,8 @@ namespace Webwarehouse.DataModels
         public int Id { get; set; }
         [Required]
         public string Name { get; set; } = null!;
-        [Required]
+        
+        [Range(0, int.MaxValue, ErrorMessage = "Только числа больше 0")]
         public int Count { get; set; }
     }
 }

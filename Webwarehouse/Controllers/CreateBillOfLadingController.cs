@@ -8,13 +8,13 @@ namespace Webwarehouse.Controllers
 {
     public class CreateBillOfLadingController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<CreateBillOfLadingController> _logger;
         private readonly WarehousDBContext _dbContext;
         private readonly ICreateBillOfLadingViewModel _createrBillOfLading;
         private int _billOfLadingId;
         
 
-        public CreateBillOfLadingController(ILogger<HomeController> logger, WarehousDBContext context)
+        public CreateBillOfLadingController(ILogger<CreateBillOfLadingController> logger, WarehousDBContext context)
         {
             _logger = logger;
             _dbContext = context;
@@ -32,22 +32,44 @@ namespace Webwarehouse.Controllers
         {
             if (billOfLading.Nomenclature != null && billOfLading.Nomenclature.Count > 0 && IsSheepingItems(billOfLading.Nomenclature))
             {
-                //Пересчитываю общее колличество позиций в бд
-                IRecalculateQuantity recalculater = new WorkerWithDB(_dbContext);
-                recalculater.RecalculateQuantity(billOfLading.Nomenclature);
+                if (Vertification(billOfLading))
+                {
+                    //Пересчитываю общее колличество позиций в бд
+                    IRecalculateQuantity recalculater = new WorkerWithDB(_dbContext);
+                    recalculater.RecalculateQuantity(billOfLading.Nomenclature);
 
-                //Создаю товарную накладную и получаю ее Id
-                ICreateBillOfLading createBillOfLading = new WorkerWithDB(_dbContext);
-                _billOfLadingId = createBillOfLading.CreateBillOfLading(billOfLading);
+                    //Создаю товарную накладную и получаю ее Id
+                    ICreateBillOfLading createBillOfLading = new WorkerWithDB(_dbContext);
+                    _billOfLadingId = createBillOfLading.CreateBillOfLading(billOfLading);
 
-                ICreateItemsBillOfLading createItemsBillOfLading = new WorkerWithDB(_dbContext);
-                createItemsBillOfLading.CreateItemsBillOfLading(_billOfLadingId, billOfLading.Nomenclature);
-                
+                    ICreateItemsBillOfLading createItemsBillOfLading = new WorkerWithDB(_dbContext);
+                    createItemsBillOfLading.CreateItemsBillOfLading(_billOfLadingId, billOfLading.Nomenclature);
 
+                    return RedirectToAction("Complete", new { billOfLadingId = _billOfLadingId });
+                }
+                else
+                {
+                    return RedirectToAction("Error", new { er = "На складе нет такого количества товара" });
+                }
 
-                return RedirectToAction("Complete",new { billOfLadingId = _billOfLadingId });
             }
             return View(billOfLading);
+        }
+
+        private bool Vertification(CreateBillOfLadingViewModel billOfLading)
+        {
+            foreach(var item in billOfLading.Nomenclature)
+            {
+                if(item.IsSheeping == true && item.CountSheeping <=0)
+                {
+                    return false;
+                }
+                else if(item.CountSheeping > item.CountAll)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public IActionResult Complete(int billOfLadingId)
@@ -57,7 +79,7 @@ namespace Webwarehouse.Controllers
             var billOfLadingNew = creator.Create(_dbContext, billOfLadingId);
             return View(billOfLadingNew);
         }
-
+        public IActionResult Error(string er) => Content(er);
         private bool IsSheepingItems(List<NomenclaturaForBillOfLading> nomenclature)
         {
             foreach (var n in nomenclature)

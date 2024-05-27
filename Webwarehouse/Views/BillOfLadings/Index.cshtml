@@ -1,0 +1,44 @@
+﻿@using Webwarehouse.Models;
+@model BillOfLadingsListViewModel;
+@{
+    ViewData["Title"] = "BillOfLadings";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Накладные</h1>
+</div>
+
+<table class="table-bordered"
+       border="1"
+       cellpadding="5"
+       align="center"
+       width="100%">
+    <thade>
+        <tr class="text-center" style="background:#bbceed">
+
+            <th>Номенклатура</th>
+            <th width="10%">Кол-во</th>
+            <th width="10%">Создать отчет</th>
+        </tr>
+    </thade>
+    <tbody>
+        @{
+            foreach (BillOfLading map in Model.BillOfLadings)
+            {
+                <tr class="text-center">
+                    <td>@map.CustomerName</td>
+                    <td>@map.DateCreat</td>
+                    <form asp-action="Index" method="post">
+                    <td>
+                        <input asp-for="IdBillOfLading"
+                               type="number"
+                               value="@map.Id"
+                               class="visually-hidden" />
+                        <input type="submit" value="Создать." style="margin:10px" />
+                    </td>
+                    </form>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -47,7 +47,7 @@ namespace Webwarehouse.Class
                     var nomenclatureFromDB = _context.Nomenclatures.Where(x=>x.Id == n.IdNomenclature).FirstOrDefault();
                     if (nomenclatureFromDB != null)
                     {
-                        nomenclatureFromDB.Count = n.CountAll - n.CountSheeping;
+                        nomenclatureFromDB.Count = (int)n.CountAll - (int)n.CountSheeping;
                         _context.SaveChanges();
                     }
                 }
@@ -93,6 +93,16 @@ namespace Webwarehouse.Class
                     }
                 }
             }
+        }
+
+        internal List<BillOfLading> GetBillOfLadingsList()
+        {
+            var listBillOfLading = _context.BillOfLadings.ToList();
+            if (listBillOfLading != null && listBillOfLading.Count > 0)
+            {
+                return listBillOfLading;
+            }
+            return new List<BillOfLading>() { new BillOfLading() {CustomerName="Пусто" } };
         }
     }
 }

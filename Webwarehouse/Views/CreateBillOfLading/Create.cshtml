@@ -63,6 +63,7 @@
                         </td>
                         <td>
                             <input asp-for="Nomenclature[i].CountSheeping" type="CountSheeping" value="@Model.Nomenclature[i].CountSheeping" />
+                            <span asp-validation-for="Nomenclature[i].CountSheeping"></span>
                         </td>
                     </tr>
                 }
